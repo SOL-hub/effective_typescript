@@ -33,21 +33,30 @@ function logMessage(message: string | null) {
   }
 } //조건문 외부에서 message의 타입은 string | null이지만 내부에서는 string이다.
 
+const foo = {
+  x: [1,2,3], bar: {
+    name:'Fred'
+  }
+}; //타입스크립트가 객체 내의 타입을 어떻게 추론하는지 알 수 있다.
+
+//👉만약 튜플 타입([number, number, number])이어야 한다면 타입 구문을 명시해야한다.
+
 function restOfPath(path: string) {
   return path.split("/").slice(1).join("/");
-}
+} //split 결과의 타입이 string이라고 추론되었음을 의미, 실제 코드에서 함수 호출이 길게 이어진다면 
+
 //편집기상의 오류를 살펴보는 것도 타입 시스템의 성향을 파악하는데 좋은 방법
 
-function getElement(elOrId: string | HTMLElement | null): HTMElemnt {
-  if (typeof elOrId === "object") {
-    return elOrId;
-  } else if (elOrId === null) {
-    return document.body;
-  } else {
-    const el = document.getElementById(elOrId);
-    return el;
-  }
-}
+// function getElement(elOrId: string | HTMLElement | null): HTMLElement {
+//   if (typeof elOrId === "object") {
+//     return elOrId; //👉'HTMLElement | null' 형식은 'HTMLElement' 형식에 할당할 수 없습니다.
+//   } else if (elOrId === null) {
+//     return document.body;
+//   } else {
+//     const el = document.getElementById(elOrId);
+//     return el; //👉'HTMLElement | null' 형식은 'HTMLElement' 형식에 할당할 수 없습니다.
+//   }
+// }
 
 const response = fetch('http://example.com'); //👉 ts언어 서비스는 편집기상에 'Go to Definition' 기능을 제공
 
@@ -55,6 +64,13 @@ declare function fetch(
     input: RequestInfo, init?: RequestInit
 ) : Promise<Response>;
 //fetch가 Promise를 반환, 두 개의 매개변수를 받는다.
+
+// type RequestInfo = request | string;
+
+// declare var Request: {
+//   prototype: Request;
+//   new(input: RequestInfo, init?: RequestInit): Request;
+//}
 
 // sum
 // - 편집기에서 ts 언어서비스를 적극 활용하라
